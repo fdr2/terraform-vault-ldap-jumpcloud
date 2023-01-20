@@ -4,6 +4,8 @@ Configure Vault's LDAP authentication backend with Jumpcloud.
 
 Issues a Vault token with the attached Nomad policy.
 
+> This module aligns with [LDAP Auth Method](https://developer.hashicorp.com/vault/docs/auth/ldap)
+
 ## Usage
 Add a module and assign a nomad policy for the tokens that will be issued.
 
