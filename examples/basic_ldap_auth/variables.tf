@@ -4,18 +4,22 @@ variable "vault_address" {
 }
 
 variable "vault_jumpcloud_ad_bindpass" {
+  type    = string
   default = "ThisIsNotTheBindPassYouAreLookingFor"
 }
 
 variable "vault_jumpcloud_ad_binduid" {
+  type    = string
   default = "ThisIsNotTheBindUidYouAreLookingFor"
 }
 
 variable "vault_jumpcloud_ad_orgid" {
+  type    = string
   default = "ThisIsNotTheAdOrgIdYouAreLookingFor"
 }
 
 variable "jumpcloud_group_policy" {
+  type = any
   default = {
     __test_Engineering : {
       policies : ["__test_vault-ops", "__test_vault-identity-mgmt"]

@@ -17,8 +17,8 @@ import (
 )
 
 type VaultLdapConfig struct {
-	RequestId     string `json:"request_id"`
-	LeaseId       string `json:"lease_id"`
+	RequestID     string `json:"request_id"`
+	LeaseID       string `json:"lease_id"`
 	Renewable     bool   `json:"renewable"`
 	LeaseDuration int    `json:"lease_duration"`
 	Data          struct {
@@ -31,22 +31,22 @@ type VaultLdapConfig struct {
 		Groupattr                string        `json:"groupattr"`
 		Groupdn                  string        `json:"groupdn"`
 		Groupfilter              string        `json:"groupfilter"`
-		InsecureTls              bool          `json:"insecure_tls"`
+		InsecureTlS              bool          `json:"insecure_tls"`
 		RequestTimeout           int           `json:"request_timeout"`
 		Starttls                 bool          `json:"starttls"`
-		TlsMaxVersion            string        `json:"tls_max_version"`
-		TlsMinVersion            string        `json:"tls_min_version"`
+		TLSMaxVersion            string        `json:"tls_max_version"`
+		TLSMinVersion            string        `json:"tls_min_version"`
 		TokenBoundCidrs          []interface{} `json:"token_bound_cidrs"`
-		TokenExplicitMaxTtl      int           `json:"token_explicit_max_ttl"`
-		TokenMaxTtl              int           `json:"token_max_ttl"`
+		TokenExplicitMaxTTL      int           `json:"token_explicit_max_ttl"`
+		TokenMaxTTL              int           `json:"token_max_ttl"`
 		TokenNoDefaultPolicy     bool          `json:"token_no_default_policy"`
 		TokenNumUses             int           `json:"token_num_uses"`
 		TokenPeriod              int           `json:"token_period"`
 		TokenPolicies            []interface{} `json:"token_policies"`
-		TokenTtl                 int           `json:"token_ttl"`
+		TokenTTL                 int           `json:"token_ttl"`
 		TokenType                string        `json:"token_type"`
 		Upndomain                string        `json:"upndomain"`
-		Url                      string        `json:"url"`
+		URL                      string        `json:"url"`
 		UsePre111GroupCnBehavior bool          `json:"use_pre111_group_cn_behavior"`
 		UseTokenGroups           bool          `json:"use_token_groups"`
 		Userattr                 string        `json:"userattr"`
@@ -60,8 +60,8 @@ type VaultLdapConfig struct {
 }
 
 type VaultLdapGroup struct {
-	RequestId     string `json:"request_id"`
-	LeaseId       string `json:"lease_id"`
+	RequestID     string `json:"request_id"`
+	LeaseID       string `json:"lease_id"`
 	Renewable     bool   `json:"renewable"`
 	LeaseDuration int    `json:"lease_duration"`
 	Data          struct {
@@ -121,7 +121,7 @@ func TestBasicLdapAuthEndpoint(t *testing.T) {
 
 	// Inspect Vault LDAP Auth Config
 	url := fmt.Sprintf("%s/v1/auth/__test/ldap/config", vaultAddr)
-	body := GetApi(url, vaultToken)
+	body := GetAPI(url, vaultToken)
 	//fmt.Println(string(body))
 
 	var config VaultLdapConfig
@@ -136,11 +136,11 @@ func TestBasicLdapAuthEndpoint(t *testing.T) {
 	assert.Equal(t, config.Data.Groupfilter, "(member={{.UserDN}})")
 	assert.Equal(t, config.Data.Userdn, "ou=Users,o=ThisIsNotTheAdOrgIdYouAreLookingFor,dc=jumpcloud,dc=com")
 	assert.Equal(t, config.Data.Userfilter, "({{.UserAttr}}={{.Username}})")
-	assert.Equal(t, config.Data.Url, "ldaps://ldap.jumpcloud.com")
+	assert.Equal(t, config.Data.URL, "ldaps://ldap.jumpcloud.com")
 
 	// Inspect Vault LDAP Engineering Group
 	url = fmt.Sprintf("%s/v1/auth/__test/ldap/groups/__test_engineering", vaultAddr)
-	body = GetApi(url, vaultToken)
+	body = GetAPI(url, vaultToken)
 	//fmt.Println(string(body))
 	var group1 VaultLdapGroup
 	err = json.Unmarshal(body, &group1)
@@ -151,7 +151,7 @@ func TestBasicLdapAuthEndpoint(t *testing.T) {
 
 	// Inspect Vault LDAP QA Group
 	url = fmt.Sprintf("%s/v1/auth/__test/ldap/groups/__test_qa", vaultAddr)
-	body = GetApi(url, vaultToken)
+	body = GetAPI(url, vaultToken)
 	//fmt.Println(string(body))
 	var group2 VaultLdapGroup
 	err = json.Unmarshal(body, &group2)
@@ -162,7 +162,7 @@ func TestBasicLdapAuthEndpoint(t *testing.T) {
 }
 
 // Helper method to get Vault API for validation
-func GetApi(url string, vaultToken string) []byte {
+func GetAPI(url string, vaultToken string) []byte {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		fmt.Println(err.Error())

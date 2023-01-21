@@ -1,4 +1,5 @@
 variable "path" {
+  type    = string
   default = "ldap"
 }
 
@@ -26,14 +27,4 @@ variable "jumpcloud_group_policy" {
       disabled : bool
     }))
   }))
-  #default = {
-  #  Engineering : {
-  #    policies : ["ops-vault-policy"]
-  #    identities : {
-  #      ops : {
-  #        enabled : false
-  #      }
-  #    }
-  #  }
-  #}
 }

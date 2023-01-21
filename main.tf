@@ -1,5 +1,4 @@
 locals {
-  identity_names = flatten([for k, v in var.jumpcloud_group_policy : [for i, k in v.identities : i]])
   identity_map = merge([for i, g in var.jumpcloud_group_policy : {
     for k, v in g.identities : k => merge(v, { group : i })
   }]...)
