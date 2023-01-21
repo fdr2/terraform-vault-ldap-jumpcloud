@@ -1,15 +1,15 @@
-## Jumpcloud LDAP
 locals {
   identity_names = flatten([for k, v in var.jumpcloud_group_policy : [for i, k in v.identities : i]])
   identity_map = merge([for i, g in var.jumpcloud_group_policy : {
     for k, v in g.identities : k => merge(v, { group : i })
   }]...)
+  jumpcloud_cert = var.jumpcloud_ad_cert_filename == null ? "${path.module}/tls/jumpcloud.chain.pem" : var.jumpcloud_ad_cert_filename
 }
 
 resource "vault_ldap_auth_backend" "this" {
   path           = var.path
   url            = "ldaps://ldap.jumpcloud.com"
-  certificate    = file(var.jumpcloud_ad_cert_filename)
+  certificate    = file(local.jumpcloud_cert)
   binddn         = "uid=${var.jumpcloud_ad_binduid},ou=Users,o=${var.jumpcloud_ad_orgid},dc=jumpcloud,dc=com"
   bindpass       = var.jumpcloud_ad_bindpass
   discoverdn     = false
@@ -61,11 +61,9 @@ resource "vault_identity_oidc_assignment" "this" {
   for_each = var.jumpcloud_group_policy
   name     = lower(each.key)
   entity_ids = concat(
-    #[for k, v in each.value["identities"] : vault_identity_entity.this[k].id],
     [for k, v in each.value["identities"] : vault_identity_entity_alias.this[k].id],
   )
   group_ids = [
-    #vault_identity_group.this[each.key].id,
     vault_identity_group_alias.this[each.key].id,
   ]
 }

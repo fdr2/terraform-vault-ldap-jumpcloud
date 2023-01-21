@@ -15,7 +15,8 @@ variable "jumpcloud_ad_orgid" {
 }
 
 variable "jumpcloud_ad_cert_filename" {
-  default = "tls/jumpcloud.chain.pem"
+  type    = string
+  default = null
 }
 
 variable "jumpcloud_group_policy" {

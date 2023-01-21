@@ -9,6 +9,9 @@ Issues a Vault token with the attached Nomad policy.
 ## Usage
 Add a module and assign a nomad policy for the tokens that will be issued.
 
+* Prerequisite: You should have the JumpCloud CA Chain in your terraform-root/tls path, or provide a path to it via
+  `jumpcloud_ad_cert_filename`
+
 ```terraform
 variable "jumpcloud_group_policy" {
   default = {
@@ -19,7 +22,7 @@ variable "jumpcloud_group_policy" {
       }
     }
     QA : {
-      policies : ["vault-ops-policy", ]
+      policies : ["vault-qa-policy"]
       identities : {
         qa : { disabled : true }
       }
@@ -30,7 +33,7 @@ variable "jumpcloud_group_policy" {
 module "vault-ldap-jumpcloud" {
   source = "./modules/terraform-vault-ldap-jumpcloud"
   jumpcloud_ad_bindpass  = var.vault_jumpcloud_ad_bindpass
-  jumpcloud_ad_binduid   = var.vault_jumpcloud_ad_bindpass
+  jumpcloud_ad_binduid   = var.vault_jumpcloud_ad_binduid
   jumpcloud_ad_orgid     = var.vault_jumpcloud_ad_orgid
   jumpcloud_group_policy = var.jumpcloud_group_policy
 }
